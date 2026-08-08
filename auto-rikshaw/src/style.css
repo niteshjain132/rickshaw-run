@@ -1,0 +1,329 @@
+:root {
+  --ink: #1a1510;
+  --paper: #f2e8d5;
+  --road: #2a2e33;
+  --accent: #f5c518;
+  --signal: #e85d04;
+  --muted: #8a8070;
+  --panel: rgba(26, 21, 16, 0.88);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: "DM Sans", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  user-select: none;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background:
+    radial-gradient(ellipse at 50% 0%, #3d3428 0%, transparent 55%),
+    linear-gradient(180deg, #1f1a14 0%, #12100c 100%);
+  transition: filter 0.35s ease;
+}
+
+#app.crashed {
+  animation: crash-shake 0.45s ease-out;
+}
+
+@keyframes crash-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-6px) rotate(-0.4deg);
+  }
+  30% {
+    transform: translateX(6px) rotate(0.4deg);
+  }
+  45% {
+    transform: translateX(-4px);
+  }
+  60% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1rem 1.1rem 0.5rem;
+  pointer-events: none;
+}
+
+.brand {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.55rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+  animation: brand-idle 3.2s ease-in-out infinite;
+}
+
+@keyframes brand-idle {
+  0%,
+  100% {
+    filter: brightness(1);
+    transform: translateY(0);
+  }
+  50% {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+  }
+}
+
+.stats {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.75rem;
+  letter-spacing: 0.04em;
+  color: var(--paper);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.stats.pulse {
+  animation: score-pop 0.45s ease;
+  color: var(--accent);
+}
+
+@keyframes score-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.22);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.stats .unit {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-left: 0.15rem;
+}
+
+#mute-btn {
+  position: absolute;
+  top: 0.85rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid rgba(245, 197, 24, 0.35);
+  border-radius: 50%;
+  background: rgba(26, 21, 16, 0.65);
+  color: var(--paper);
+  font-size: 0.95rem;
+  cursor: pointer;
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+#mute-btn:hover {
+  background: rgba(26, 21, 16, 0.9);
+  transform: translateX(-50%) scale(1.06);
+}
+
+#mute-btn.muted {
+  opacity: 0.55;
+}
+
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#flash {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 70%, rgba(255, 180, 60, 0.55), rgba(232, 93, 4, 0.25) 40%, transparent 70%);
+  opacity: 0;
+}
+
+#flash.show {
+  animation: flash-burst 0.5s ease-out forwards;
+}
+
+@keyframes flash-burst {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background:
+    linear-gradient(180deg, rgba(18, 16, 12, 0.55) 0%, rgba(18, 16, 12, 0.82) 100%);
+  backdrop-filter: blur(2px);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.overlay:not(.hidden) .panel {
+  animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.panel {
+  width: min(100%, 340px);
+  text-align: center;
+  padding: 1.75rem 1.4rem 1.5rem;
+  background: var(--panel);
+  border: 1px solid rgba(245, 197, 24, 0.35);
+  border-radius: 4px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 0.45rem;
+}
+
+.panel h1 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(2.4rem, 10vw, 3.2rem);
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.panel p {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: rgba(242, 232, 213, 0.85);
+  margin-bottom: 1.25rem;
+}
+
+#start-btn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  padding: 0.7rem 1.6rem 0.55rem;
+  background: var(--accent);
+  color: var(--ink);
+  border-radius: 3px;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  animation: cta-glow 2s ease-in-out infinite;
+}
+
+@keyframes cta-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 197, 24, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(245, 197, 24, 0);
+  }
+}
+
+#start-btn:hover {
+  background: #ffd84a;
+  transform: translateY(-1px);
+}
+
+#start-btn:active {
+  transform: translateY(1px);
+  animation: none;
+}
+
+.hint {
+  margin-top: 1rem !important;
+  margin-bottom: 0 !important;
+  font-size: 0.75rem !important;
+  color: var(--muted) !important;
+}
+
+.touch-zones {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  pointer-events: none;
+}
+
+.touch-zones .zone {
+  flex: 1;
+  border: none;
+  background: transparent;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.touch-zones .zone.pressed {
+  background: rgba(245, 197, 24, 0.08);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .touch-zones .zone {
+    pointer-events: none;
+  }
+}

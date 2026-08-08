@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Rickshaw Run</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="hud">
+        <div class="brand">Rickshaw Run</div>
+        <div class="stats">
+          <span id="score">0</span>
+          <span class="unit">m</span>
+        </div>
+      </header>
+
+      <button id="mute-btn" type="button" aria-label="Mute">🔊</button>
+
+      <canvas id="game" aria-label="Rickshaw Run game"></canvas>
+      <div id="flash" aria-hidden="true"></div>
+
+      <div id="overlay" class="overlay">
+        <div class="panel">
+          <p class="eyebrow" id="overlay-eyebrow">Street dash</p>
+          <h1 id="overlay-title">Rickshaw Run</h1>
+          <p id="overlay-msg">
+            Dodge traffic across 3 lanes. Speed climbs the longer you survive.
+          </p>
+          <button id="start-btn" type="button">Start Engine</button>
+          <p class="hint">
+            Keyboard: ← → or A D &nbsp;·&nbsp; Mobile: tap left / right
+            <br />
+            M to mute
+          </p>
+        </div>
+      </div>
+
+      <div class="touch-zones" aria-hidden="true">
+        <button id="tap-left" type="button" class="zone" aria-label="Move left"></button>
+        <button id="tap-right" type="button" class="zone" aria-label="Move right"></button>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
