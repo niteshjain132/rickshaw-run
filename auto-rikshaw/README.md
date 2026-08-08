@@ -92,12 +92,18 @@ npx vercel --prod
 
 If the GitHub repo is connected in the Vercel project settings, `git push` to `main` can also trigger a rebuild.
 
-### “Stop” the public site
+### Pause (stop) the public site — prefer this over delete
 
-There is no local process to kill. Options:
+There is no local process to kill. To take the public URL offline **without deleting** the project:
 
-- **Unpublish / remove** the project in the Vercel dashboard (Project → Settings → delete), or
-- **Pause** deployments / protect the URL under Project → Settings → Deployment Protection (blocks public access without auth).
+1. Open the project on [vercel.com](https://vercel.com) → **rickshaw-run**
+2. **Settings** → **General**
+3. Find **Pause Project** (above Delete) → **Pause Project**
+4. Confirm with the project name
+
+While paused, production stops serving traffic. Later use **Resume Project** in the same place to bring it back.
+
+Avoid **Delete Project** unless you want to remove the deployment entirely.
 
 Your machine being off does **not** take the public URL down.
 
